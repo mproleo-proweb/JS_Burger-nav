@@ -136,6 +136,4 @@ const LevelSystem = {
     }
 };
 
-window.addEventListener('load', () => {
-    LevelSystem.startLevelAnimation();
-});
+LevelSystem.startLevelAnimation();

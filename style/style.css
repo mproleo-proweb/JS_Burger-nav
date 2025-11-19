@@ -184,6 +184,7 @@ button {
     width: 100%;
     transition: 0.5s;
     z-index: 99;
+    display: none;
 }
 .basket.active{
     top: 10px;

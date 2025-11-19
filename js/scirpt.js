@@ -92,17 +92,9 @@ const LevelSystem = {
     currentLevel: 0,
     maxLevel: 100,
     levelText: document.getElementById('levelText'),
-    isAnimating: false,
-    
-    init() {
-        this.currentLevel = 0;
-        this.startLevelAnimation();
-    },
     
     startLevelAnimation() {
-        if (this.isAnimating) return;
-        
-        this.isAnimating = true;
+        this.currentLevel = 0;
         this.animateLevelUp();
     },
     
@@ -111,34 +103,15 @@ const LevelSystem = {
             this.currentLevel++;
             this.updateDisplay();
             
-            const speed = this.getAnimationSpeed();
+            let speed = 200;
+            if (this.currentLevel > 80) speed = 25;
+            else if (this.currentLevel > 60) speed = 50;
+            else if (this.currentLevel > 40) speed = 100;
+            else if (this.currentLevel > 20) speed = 150;
             
             setTimeout(() => {
                 this.animateLevelUp();
             }, speed);
-        } else {
-            this.isAnimating = false;
-        }
-    },
-    
-    getAnimationSpeed() {
-        const levelGroup = Math.floor(this.currentLevel / 20);
-        
-        switch(levelGroup) {
-            case 0:
-                return 200;
-            case 1:
-                return 150;
-            case 2:
-                return 100;
-            case 3:
-                return 50;
-            case 4:
-                return 25;
-            case 5:
-                return 0;
-            default:
-                return 200;
         }
     },
     
@@ -149,10 +122,7 @@ const LevelSystem = {
     
     updateColor() {
         this.levelText.className = 'level-text';
-        
-        if (this.currentLevel >= 100) {
-            this.levelText.classList.add('level-color-100');
-        } else if (this.currentLevel >= 80) {
+        if (this.currentLevel >= 80) {
             this.levelText.classList.add('level-color-80');
         } else if (this.currentLevel >= 60) {
             this.levelText.classList.add('level-color-60');
@@ -167,14 +137,5 @@ const LevelSystem = {
 };
 
 window.addEventListener('load', () => {
-    LevelSystem.init();
+    LevelSystem.startLevelAnimation();
 });
-
-window.restartLevelAnimation = () => {
-    LevelSystem.currentLevel = 0;
-    LevelSystem.isAnimating = false;
-    LevelSystem.updateDisplay();
-    setTimeout(() => {
-        LevelSystem.startLevelAnimation();
-    }, 1000);
-};
